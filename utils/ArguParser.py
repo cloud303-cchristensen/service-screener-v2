@@ -8,8 +8,9 @@ class ArguParser:
         "d": "debug",
         "t": "test",
         "p": "profile",
-        "b": "bucket",
-        "f": "filters"
+        "b": "bucket", #This is beta for some reason? TODO
+        "f": "filters",
+        "sb": "s3bucket" 
     }
     
     CLI_ARGUMENT_RULES = {
