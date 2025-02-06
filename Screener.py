@@ -270,22 +270,3 @@ class Screener:
         # generate the full results in JSON format
         with open(htmlFolder + "/api-full.json", "w") as f:
             json.dump(apiResultArray, f)
-
-
-        if uploadToS3:
-            s3_client = Config.get('ssBoto').client('s3')
-            bucket_name = Config.get('s3bucket')
-            current_date = time.strftime("%Y%m%d")
-            
-            local_output = "/service-screener-v2/output.zip"
-            s3_key = f"screener-results/{stsInfo['Account']}/{current_date}/output.zip"
-            
-            try:
-                s3_client.upload_file(local_output, bucket_name, s3_key)
-                print(f"\n Upload Successful")
-                print(f" Source: {local_output}")
-                print(f" Destination: s3://{bucket_name}/{s3_key}\n")
-            except Exception as e:
-                print(f"\n Upload Failed")
-                print(f" Error: {str(e)}")
-                print(f" File Location: {local_output}\n")
