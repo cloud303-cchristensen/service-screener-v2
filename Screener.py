@@ -275,14 +275,17 @@ class Screener:
         if uploadToS3:
             s3_client = Config.get('ssBoto').client('s3')
             bucket_name = Config.get('s3bucket')
+            current_date = time.strftime("%Y%m%d")
             
-            # Upload output.zip to S3
+            local_output = "/service-screener-v2/output.zip"
+            s3_key = f"screener-results/{stsInfo['Account']}/{current_date}/output.zip"
+            
             try:
-                s3_client.upload_file(
-                    f"{_C.ROOT_DIR}/output.zip", 
-                    bucket_name,
-                    f"screener-results/{stsInfo['Account']}/output.zip"
-                )
-                print(f"Successfully uploaded results to s3://{bucket_name}/screener-results/{stsInfo['Account']}/output.zip")
+                s3_client.upload_file(local_output, bucket_name, s3_key)
+                print(f"\n Upload Successful")
+                print(f" Source: {local_output}")
+                print(f" Destination: s3://{bucket_name}/{s3_key}\n")
             except Exception as e:
-                print(f"Error uploading to S3: {str(e)}")
+                print(f"\n Upload Failed")
+                print(f" Error: {str(e)}")
+                print(f" File Location: {local_output}\n")
