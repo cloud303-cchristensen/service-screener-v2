@@ -5,6 +5,7 @@ import json
 import locale
 from sys import platform
 
+
 if platform == 'darwin':
     from multiprocess import Pool
 else:
@@ -17,6 +18,7 @@ from utils.ArguParser import ArguParser
 from utils.CfnTrail import CfnTrail
 from utils.CrossAccountsValidator import CrossAccountsValidator
 from utils.Tools import _info, _warn
+from utils.S3Uploader import S3Uploader
 import constants as _C
 from utils.AwsRegionSelector import AwsRegionSelector
 from Screener import Screener
@@ -350,6 +352,12 @@ for acctId, cred in rolesCred.items():
 
 adminlteDir = _C.ADMINLTE_ROOT_DIR
 shutil.make_archive('output', 'zip', adminlteDir)
+
+if uploadToS3: #TODO Potentially come back to this
+    uploader = S3Uploader()
+    sts_info = Config.get('stsInfo')
+    uploader.upload_output(sts_info, _C.ROOT_DIR)
+
 
 print("Pages generated, download \033[1;42moutput.zip\033[0m to view")
 print("CloudShell user, you may use this path: \033[1;42m =====> \033[0m /tmp/service-screener-v2/output.zip \033[1;42m <===== \033[0m")
