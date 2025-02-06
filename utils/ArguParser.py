@@ -27,9 +27,9 @@ class ArguParser:
             "help": "--services ec2,iam"
         },
         's3bucket': {
-        "required": False,
-        "default": None,
-        "help": "S3 bucket name for uploading results"
+            "required": False,
+            "default": None,
+            "help": "S3 bucket name for uploading results"
         },
         "debug": {
             "required": False,
@@ -91,14 +91,14 @@ class ArguParser:
     @staticmethod
     def Load():
         parser = argparse.ArgumentParser(prog='Screener', description='Service-Screener, open-source to check your AWS environment against AWS Well-Architected Pillars')
-    
         for k, v in ArguParser.CLI_ARGUMENT_RULES.items():
-            parser.add_argument('-' + k[:1], '--' + k, required=v['required'], default=v['default'], help=v.get('help', None))
-        
+            # Find the short form from OPTLISTS by matching the long form
+            short_form = next((key for key, value in ArguParser.OPTLISTS.items() if value == k), k[:1])
+            parser.add_argument('-' + short_form, '--' + k, required=v['required'], default=v['default'], help=v.get('help', None))
         parser.allow_abbrev = False
         args = vars(parser.parse_args())
-        
         return args
+
         
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog='Screener', description='Service-Screener, open-source to check your AWS environment against AWS Well-Architected Pillars')
