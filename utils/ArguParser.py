@@ -25,6 +25,11 @@ class ArguParser:
             "default": "rds,ec2,iam,s3,efs,lambda,guardduty,cloudfront,cloudtrail,elasticache,eks,dynamodb,opensearch,kms,cloudwatch,redshift,apigateway",
             "help": "--services ec2,iam"
         },
+        's3bucket': {
+        "required": False,
+        "default": None,
+        "help": "S3 bucket name for uploading results"
+        },
         "debug": {
             "required": False,
             "default": False,
