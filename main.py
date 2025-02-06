@@ -36,12 +36,15 @@ crossAccounts = _cli_options['crossAccounts']
 workerCounts = _cli_options['workerCounts']
 beta = _cli_options['beta']
 
+
 # print(crossAccounts)
 DEBUG = True if debugFlag in _C.CLI_TRUE_KEYWORD_ARRAY or debugFlag is True else False
 testmode = True if testmode in _C.CLI_TRUE_KEYWORD_ARRAY or testmode is True else False
 crossAccounts = True if crossAccounts in _C.CLI_TRUE_KEYWORD_ARRAY or crossAccounts is True else False
 beta = True if beta in _C.CLI_TRUE_KEYWORD_ARRAY or beta is True else False
 _cli_options['crossAccounts'] = crossAccounts
+
+s3bucket = _cli_options['s3bucket']
 
 
 # <TODO> analyse the impact profile switching
@@ -309,7 +312,16 @@ for acctId, cred in rolesCred.items():
     
     ## Generate output
     uploadToS3 = False
-    
+    if s3bucket:
+        print(f"\n S3 Upload enabled - Target bucket: {s3bucket}")
+        uploadToS3 = True
+        Config.set('s3bucket', s3bucket)
+    else:
+        print("\n Local output mode - No S3 bucket specified\n")
+
+
+
+
     ## <TODO>
     ## Might be able breakdown the function further to leverage on multi-processing
     
